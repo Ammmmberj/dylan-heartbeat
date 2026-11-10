@@ -510,10 +510,11 @@ ${historyText}`
   }
 
   const rawAiText = normalizeContentToText(data.choices?.[0]?.message?.content).trim();
+  const cleanedAiText = rawAiText.replace(/<thinking>[\s\S]*?<\/thinking>/gi, '').replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
   console.log("\nWake Result Summary:\n");
   console.log(JSON.stringify({ choices: Array.isArray(data.choices) ? data.choices.length : 0, ai_text_chars: rawAiText.length }));
 
-  const diaryResult = extractDiaryFromResponse(rawAiText);
+  const diaryResult = extractDiaryFromResponse(cleanedAiText);
   const diarySaved = appendDiaryEntry(diaryResult.diaryContent);
   const aiText = diaryResult.remainingText;
 
